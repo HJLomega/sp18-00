@@ -84,7 +84,7 @@ public class IntList {
         //TODO:  fill in method
         if (B == null){
             return A;
-        }else if (A == null){
+        } else if (A == null){
             A = new IntList(B.first,null);
             IntList.dcatenate(A,B.rest);
             return A;
@@ -92,7 +92,7 @@ public class IntList {
             A.rest = new IntList(B.first,null);
             IntList.dcatenate(A.rest,B.rest);
             return A;
-        }else{
+        } else {
             IntList.dcatenate(A.rest,B);
             return A;
         }
@@ -106,7 +106,7 @@ public class IntList {
         //TODO:  fill in method
         IntList L = null;
         L = IntList.dcatenate(L,A); /* the input L is null, so L should be assign even after operation */
-        IntList.dcatenate(L,B);
+        L = IntList.dcatenate(L,B); /* the input L is null, so L should be assign even after operation */
         return L;
     }
 
