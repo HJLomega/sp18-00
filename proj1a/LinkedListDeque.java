@@ -44,10 +44,7 @@ public class LinkedListDeque<T> {
     }
     /** Returns true if deque is empty, false otherwise */
     public boolean isEmpty(){
-        if (sentinel.next == sentinel){
-            return true;
-        }
-        return false;
+        return sentinel.next == sentinel;
     }
     /** Returns the number of items in the deque */
     public int size(){
@@ -59,13 +56,14 @@ public class LinkedListDeque<T> {
         if (isEmpty()){
             return;
         }
-        ItemNode p = sentinel;
+        System.out.print(sentinel.next.item);
+        ItemNode p = sentinel.next;
         while (p.next != sentinel){
-            System.out.print(p.next.item);
             System.out.print(' ');
+            System.out.print(p.next.item);
             p = p.next;
         }
-        System.out.print(p.item);
+        System.out.print('\n');
     }
     /** Removes and returns the item at the front of the deque. If no such item exists, returns null */
     public T removeFirst(){
@@ -91,8 +89,18 @@ public class LinkedListDeque<T> {
      *  If no such item exists, returns null. Must not alter the deque!
      *  get use iteration, not recursion */
     public T get(int index){
+        if (index < 0 || index >= size){ //range check
+            return null;
+        }
+        if(index < size / 2){
+            return forwardGet(index);
+        } else {
+            return backwardGet(size - 1 - index);
+        }
+    }
+    /** get the item at the index-th position */
+    private T forwardGet(int index){
         ItemNode p = sentinel;
-        /* can be optimized using both forward and backward iteration */
         int i = 0;
         while (p.next != sentinel){
             if (i == index){
@@ -103,21 +111,42 @@ public class LinkedListDeque<T> {
         }
         return null;
     }
-
-
-    /* not implemented yet */
-    /** get the item at the index-th position */
-    private T forwardGet(int index){
-        return null;
-    }
     /** get the item at the last index-th position */
     private T backwardGet(int index){
+        ItemNode p = sentinel;
+        int i = 0;
+        while (p.prev != sentinel){
+            if (i == index){
+                return p.prev.item;
+            }
+            p = p.prev;
+            i += 1;
+        }
         return null;
     }
     /** Same as get, but uses recursion */
     public T getRecursive(int index){
-        return null;
+        if (index < 0 || index >= size){ //range check
+            return null;
+        }
+        if(index < size / 2){
+            return forwardGetRecursive(index, sentinel);
+        } else {
+            return backwardGetRecursive(size - 1 - index, sentinel);
+        }
     }
-
-
+    /** Same as forwardGet, but uses recursion */
+    private T forwardGetRecursive(int index, ItemNode p){
+        if (index == 0){
+            return p.next.item;
+        }
+        return forwardGetRecursive(index - 1, p.next);
+    }
+    /** Same as backwardGet, but uses recursion */
+    private T backwardGetRecursive(int index, ItemNode p){
+        if (index == 0){
+            return p.prev.item;
+        }
+        return backwardGetRecursive(index - 1, p.prev);
+    }
 }
