@@ -12,24 +12,11 @@ public class ArrayDeque<T> {
     private int nextLast;
     private T[] items;
 
-
-    /**
-     * constructor
-     * */
-    public ArrayDeque(T item) {
-        items = (T[]) new Object[8];
-        items[4] = item;
-        nextFirst = 3;
-        nextLast = 5;
-        size = 1;
-    }
-
     /**
      * empty constructor
      */
     public ArrayDeque() {
         items = (T[]) new Object[8];
-
         nextFirst = 4;
         nextLast = 5;
         size = 0;
@@ -49,35 +36,43 @@ public class ArrayDeque<T> {
         return (index - 1 + items.length) % items.length;
     }
 
-    /** resize the Deque ,the Factor is 2 or 0.5 */
-    private void resize(double factor){
-       T[] temp = (T[]) new Object[(int) (items.length * factor)];
-        for(int i = 0; i < size; i += 1){
+    /**
+     * resize the Deque ,the Factor is 2 or 0.5
+     */
+    private void resize(double factor) {
+        T[] temp = (T[]) new Object[(int) (items.length * factor)];
+        for (int i = 0; i < size; i += 1) {
             temp[temp.length / 4 + i] = get(i);
         }
-        nextFirst = temp.length / 4 - 1 ;
-        nextLast = temp.length / 4 + size ;
+        nextFirst = temp.length / 4 - 1;
+        nextLast = temp.length / 4 + size;
         items = temp;
     }
 
-    /** check if Array needs to expand , expand when needed */
-    private void expandCheck(){
-        if (size == items.length){
+    /**
+     * check if Array needs to expand , expand when needed
+     */
+    private void expandCheck() {
+        if (size == items.length) {
             resize(2);
         }
     }
-    /** check if Array needs to expand .
+
+    /**
+     * check if Array needs to expand .
      * For arrays of length 16 or more,
      * usage factor should always be at least 25%.
-     * For smaller arrays, usage factor can be arbitrarily low  */
-    private void cutCheck(){
+     * For smaller arrays, usage factor can be arbitrarily low
+     */
+    private void cutCheck() {
         if (items.length < 16) {
             return;
         }
-        while (size * 4 <= items.length){
+        while (size * 4 <= items.length) {
             resize(0.5);
         }
     }
+
     /**
      * Adds an item of type T to the front of the deque
      */
@@ -116,12 +111,12 @@ public class ArrayDeque<T> {
      * Prints the items in the deque from first to last, separated by a space
      */
     public void printDeque() {
-        if (isEmpty()){
+        if (isEmpty()) {
             System.out.print('\n');
             return;
         }
         System.out.print(get(0));
-        for (int i = 1; i < size; i+=1){
+        for (int i = 1; i < size; i += 1) {
             System.out.print(' ');
             System.out.print(get(i));
         }
@@ -132,6 +127,9 @@ public class ArrayDeque<T> {
      * Removes and returns the item at the front of the deque. If no such item exists, returns null
      */
     public T removeFirst() {
+        if (isEmpty()) {
+            return null;
+        }
         int first = getNextIndex(nextFirst);
         T rv = items[first];
         items[first] = null;
@@ -145,6 +143,9 @@ public class ArrayDeque<T> {
      * Removes and returns the item at the back of the deque. If no such item exists, returns null
      */
     public T removeLast() {
+        if (isEmpty()) {
+            return null;
+        }
         int last = getPrevIndex(nextLast);
         T rv = items[last];
         items[last] = null;
