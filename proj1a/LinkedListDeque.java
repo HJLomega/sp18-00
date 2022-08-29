@@ -1,13 +1,13 @@
-public class LinkedListDeque<T> {
+public class LinkedListDeque<T> implements Deque<T> {
     /**
      * invariants:
      * the first one is sentinel.next
      * the last one is sentinel.prev
      */
     private class ItemNode {
-        public T item;
-        public ItemNode next;
-        public ItemNode prev;
+        private T item;
+        private ItemNode next;
+        private ItemNode prev;
 
         public ItemNode(T i, ItemNode n, ItemNode p) {
             item = i;
@@ -33,6 +33,7 @@ public class LinkedListDeque<T> {
     /**
      * Adds an item of type T to the front of the deque
      */
+    @Override
     public void addFirst(T item) {
         sentinel.next.prev = new ItemNode(item, sentinel.next, sentinel);
         sentinel.next = sentinel.next.prev;
@@ -42,6 +43,7 @@ public class LinkedListDeque<T> {
     /**
      * Adds an item of type T to the back of the deque
      */
+    @Override
     public void addLast(T item) {
         sentinel.prev.next = new ItemNode(item, sentinel, sentinel.prev);
         sentinel.prev = sentinel.prev.next;
@@ -58,6 +60,7 @@ public class LinkedListDeque<T> {
     /**
      * Returns the number of items in the deque
      */
+    @Override
     public int size() {
         return size;
     }
@@ -65,6 +68,7 @@ public class LinkedListDeque<T> {
     /**
      * Prints the items in the deque from first to last, separated by a space
      */
+    @Override
     public void printDeque() {
         /* can we don't use if ? */
         if (isEmpty()) {
@@ -83,6 +87,7 @@ public class LinkedListDeque<T> {
     /**
      * Removes and returns the item at the front of the deque. If no such item exists, returns null
      */
+    @Override
     public T removeFirst() {
         if (isEmpty()) {
             return null;
@@ -97,6 +102,7 @@ public class LinkedListDeque<T> {
     /**
      * Removes and returns the item at the back of the deque. If no such item exists, returns null
      */
+    @Override
     public T removeLast() {
         if (isEmpty()) {
             return null;
@@ -113,6 +119,7 @@ public class LinkedListDeque<T> {
      * If no such item exists, returns null. Must not alter the deque!
      * get use iteration, not recursion
      */
+    @Override
     public T get(int index) {
         if (index < 0 || index >= size) { //range check
             return null;

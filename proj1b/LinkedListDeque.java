@@ -5,8 +5,8 @@ public class LinkedListDeque<T> implements Deque<T> {
      * the last one is sentinel.prev
      */
     private class ItemNode {
-        public T item;
-        public ItemNode next;
+        private T item;
+        private ItemNode next;
         public ItemNode prev;
 
         public ItemNode(T i, ItemNode n, ItemNode p) {
