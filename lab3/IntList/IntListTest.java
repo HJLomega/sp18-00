@@ -10,6 +10,20 @@ public class IntListTest {
      * assertEquals knows how to handle IntLists just fine.
      */
 
+    @Test(timeout = 1000)
+    public void testReverse() {
+        IntList one = IntList.of(3, 2, 1);
+        IntList expect = IntList.of(1, 2, 3);
+        assertEquals(expect, IntList.reverse(one));
+        assertEquals(expect, one);
+        assertEquals(null, IntList.reverse(null));
+
+        IntList one2 = IntList.of(2, 1);
+        IntList expect2 = IntList.of(1, 2);
+        assertEquals(expect2, IntList.reverse(one2));
+        assertEquals(expect2, one2);
+    }
+
     @Test
     public void testList() {
         IntList one = new IntList(1, null);
@@ -67,7 +81,7 @@ public class IntListTest {
     }
 
     /** If you're running this from the command line, you'll need
-      * to add a main method. See ArithmeticTest.java for an
-      * example. */
+     * to add a main method. See ArithmeticTest.java for an
+     * example. */
 
 }
