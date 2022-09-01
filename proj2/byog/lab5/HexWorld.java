@@ -32,8 +32,8 @@ public class HexWorld {
 
     /**
      * adds a hexagon of side length s and TETile type tto a given position in the world
+     * range from (0, 0) to (WIDTH, HEIGHT)
      */
-
     public static void addHexagon(TETile[][] world, Position p, int s, TETile t) {
         for (int i = 0; i < s; i += 1) {
             for (int j = 0; j < 3 * s - 2; j += 1) {
@@ -69,7 +69,7 @@ public class HexWorld {
     public static void sSizeHexWorld(int s) {
         int width = 3 * s - 2; //single Hex's width
         int height = 2 * s; //single Hex's height
-        int WIDTH = 2 * s + 2 * (width); //World's width
+        int WIDTH = 2 * s + 3 * width; //World's width
         int HEIGHT = 5 * height; //World's height
 
         TERenderer ter = new TERenderer();
@@ -91,9 +91,17 @@ public class HexWorld {
      * fill the world with Hex of s side
      */
     public static void fillWithSHex(TETile[][] world, int s) {
-
+        // 1 - 3 column
         for (int i = 1; i <= 3; i += 1) {
             for (int j = 1; j <= i + 2; j += 1) {
+                Position p = calPosition(i, j, s);
+                TETile t = randomTile();
+                addHexagon(world, p, s, t);
+            }
+        }
+        // 4 - 5 column
+        for (int i = 4; i <= 5; i += 1) {
+            for (int j = 1; j <= 8 - i; j += 1) {
                 Position p = calPosition(i, j, s);
                 TETile t = randomTile();
                 addHexagon(world, p, s, t);
@@ -107,7 +115,30 @@ public class HexWorld {
      */
     public static Position calPosition(int i, int j, int s) {
         // TODO
-        return null;
+        int gapX = s + s - 1;
+        int x = gapX * (i - 1);
+        int height = 2 * s;
+        int y;
+        switch (i) {
+            case 1:
+                y = height + height * (j - 1);
+                break;
+            case 2:
+                y = height / 2 + height * (j - 1);
+                break;
+            case 3:
+                y = height * (j - 1);
+                break;
+            case 4:
+                y = height / 2 + height * (j - 1);
+                break;
+            case 5:
+                y = height + height * (j - 1);
+                break;
+            default:
+                return null;
+        }
+        return new Position(x, y);
     }
 
     public static TETile randomTile() {
@@ -116,7 +147,7 @@ public class HexWorld {
     }
 
     public static void main(String[] args) {
-
+        sSizeHexWorld(2);
     }
 
 }
