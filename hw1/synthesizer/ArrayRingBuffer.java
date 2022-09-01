@@ -53,11 +53,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
             throw new RuntimeException("Ring buffer overflow");
         }
         rb[last] = x;
-        if (last == capacity - 1) {
-            last = 0;
-        } else {
-            last += 1;
-        }
+        last = getNextIndex(last);
         fillCount += 1;
     }
 
@@ -81,11 +77,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
         }
         T rv = rb[first];
         rb[first] = null;
-        if (first == capacity - 1) {
-            first = 0;
-        } else {
-            first += 1;
-        }
+        first = getNextIndex(first);
         fillCount -= 1;
         return rv;
     }
