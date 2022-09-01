@@ -1,6 +1,8 @@
 // TODO: Make sure to make this class a part of the synthesizer package
 package synthesizer;
 
+import org.junit.Test;
+
 import java.util.Iterator;
 
 //TODO: Make sure to make this class and all of its methods public
@@ -21,7 +23,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     /* Index for the next enqueue. */
     private int last;
     /* Array for storing the buffer data. */
-    private T[] rb;
+    private final T[] rb;
 
     /**
      * Create a new ArrayRingBuffer with the given capacity.
@@ -59,6 +61,13 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
         fillCount += 1;
     }
 
+    private int getNextIndex(int index) {
+        if (index == capacity - 1) {
+            return 0;
+        }
+        return index + 1;
+    }
+
     /**
      * Dequeue oldest item in the ring buffer. If the buffer is empty, then
      * throw new RuntimeException("Ring buffer underflow"). Exceptions
@@ -91,5 +100,31 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
         return rv;
     }
 
+    private class ARBIterator implements Iterator<T> {
+        private int nextItem;
+
+        public ARBIterator() {
+            nextItem = first;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return nextItem != last;
+        }
+
+        @Override
+        public T next() {
+            T rv = rb[nextItem];
+            nextItem = getNextIndex(nextItem);
+            return rv;
+        }
+    }
+
     // TODO: When you get to part 5, implement the needed code to support iteration.
+    @Override
+    public Iterator<T> iterator() {
+        return new ARBIterator();
+    }
+
+
 }
