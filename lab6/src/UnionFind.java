@@ -90,7 +90,8 @@ public class UnionFind {
         if (hold < 0){
             return v1;
         }
-        return find(hold);
+        items[v1] = find(hold);
+        return items[v1];
     }
 
 }
