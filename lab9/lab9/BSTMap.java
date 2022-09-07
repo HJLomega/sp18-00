@@ -196,7 +196,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
             parent = node;
             node = node.right;
         }
-        if(parent == p){
+        if (parent == p) {
             parent.left = node.left;
             return node;
         }
@@ -211,11 +211,31 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      **/
     @Override
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException();
+        if (get(key) == value) {
+            return remove(key);
+        }
+        return null;
+    }
+
+    private class BSTMapIterator implements Iterator<K> {
+        // TODO
+        BSTMapIterator() {
+
+        }
+
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+
+        @Override
+        public K next() {
+            return null;
+        }
     }
 
     @Override
     public Iterator<K> iterator() {
-        throw new UnsupportedOperationException();
+        return new BSTMapIterator();
     }
 }
