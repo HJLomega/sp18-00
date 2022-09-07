@@ -99,6 +99,18 @@ public class TestBSTMap {
         }
     }
 
+    @Test
+    public void testRemove(){
+        BSTMap<String, Integer> b = new BSTMap<String, Integer>();
+        for (int i = 0; i < 10; i++) {
+            b.put("hi" + i,  i);
+        }
+        for (int i =0; i < 10; i++){
+            b.put("ai"+ i , i);
+        }
+        b.remove("hi0");
+    }
+
     public static void main(String[] args) {
         jh61b.junit.TestRunner.runTests(TestBSTMap.class);
     }

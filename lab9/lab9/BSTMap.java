@@ -175,11 +175,9 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         if (child_count == 0) {
             return null;
         } else if (child_count == 11) {
-            Node predecessor = findPredecessor(p);
+            Node predecessor = removePredecessor(p);
             p.key = predecessor.key;
             p.value = predecessor.value;
-            V[] temp = (V[]) new Object[1];
-            remove_helper(predecessor.key, predecessor , temp);
             return p;
         } else {
             if (child_count == 10) {
@@ -190,13 +188,22 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         }
     }
 
-    private Node findPredecessor(Node p){
-        p = p.left;
-        while (p.right != null){
-            p = p.right;
+    /* remove and return the Predecessor of p */
+    private Node removePredecessor(Node p) {
+        Node parent = p;
+        Node node = p.left;
+        while (node.right != null) {
+            parent = node;
+            node = node.right;
         }
-        return p;
+        if(parent == p){
+            parent.left = node.left;
+            return node;
+        }
+        parent.right = node.left;
+        return node;
     }
+
     /**
      * Removes the key-value entry for the specified key only if it is
      * currently mapped to the specified value.  Returns the VALUE removed,
