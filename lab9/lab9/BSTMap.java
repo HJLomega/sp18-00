@@ -93,6 +93,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      * Inserts the key KEY
      * If it is already present, updates value to be VALUE.
      */
+    // TODO : ?putting with existing key updates the value?
     @Override
     public void put(K key, V value) {
         root = putHelper(key, value, root);
