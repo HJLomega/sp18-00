@@ -126,6 +126,16 @@ public class TestMyHashMap {
         assertEquals(345, studentIDs.get("evil alan").intValue());
         assertEquals(studentIDs.get("evil alan"), studentIDs.get("alan"));
     }
+    @Test
+    public void testIterator(){
+        MyHashMap<String, Integer> dictionary = new MyHashMap<>();
+        for (int i = 0; i < 20; i++) {
+            dictionary.put("hi" + i, 1);
+        }
+        for (String s : dictionary){
+            System.out.println(s);
+        }
+    }
 
     public static void main(String[] args) {
         jh61b.junit.TestRunner.runTests(TestMyHashMap.class);

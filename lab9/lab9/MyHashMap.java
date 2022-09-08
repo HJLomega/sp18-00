@@ -1,8 +1,6 @@
 package lab9;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  *  A hash table-backed Map implementation. Provides amortized constant time
@@ -24,6 +22,13 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     public MyHashMap() {
         buckets = new ArrayMap[DEFAULT_SIZE];
+        this.clear();
+    }
+
+    /*  resize the array of buckets anytime the load factor exceeds MAX_LF */
+    private void resize(int newSize){
+        // TODO
+        buckets = new ArrayMap[newSize];
         this.clear();
     }
 
@@ -81,7 +86,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     /* Returns a Set view of the keys contained in this map. */
     @Override
     public Set<K> keySet() {
-        throw new UnsupportedOperationException();
+        Set<K> set = new HashSet<K>();
+        for (K key : this){
+            set.add(key);
+        }
+        return set;
     }
 
     /* Removes the mapping for the specified key from this map if exists.
@@ -102,6 +111,58 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     @Override
     public Iterator<K> iterator() {
-        throw new UnsupportedOperationException();
+        return new hashSetIterator();
+    }
+
+    private class hashSetIterator implements Iterator<K> {
+
+        private int presentIndex;
+        private List<K> cacheList;
+
+        public hashSetIterator(){
+            presentIndex = -1;
+            cacheList = new LinkedList<>();
+        }
+
+        @Override
+        public K next() {
+            Iterator<K> iterator= cacheList.iterator();
+            if (iterator.hasNext()){
+                K rv = iterator.next();
+               cacheList.remove(rv);
+                return rv;
+            }
+            presentIndex = searchNextBucket();
+            for (K key : buckets[presentIndex]){ // copy
+                cacheList.add(key);
+            }
+            return next();
+        }
+
+
+        /* search next bucket , return its index .
+           if it doesn't find the next bucket,throw java.util.NoSuchElementException
+         */
+        private int searchNextBucket() {
+            for (int i = presentIndex + 1; i < buckets.length; i += 1) {
+                if (buckets[i].size != 0) {
+                    return i;
+                }
+            }
+            throw new java.util.NoSuchElementException("HashMap overflow");
+        }
+
+        @Override
+        public boolean hasNext() {
+            if (cacheList.size() != 0){
+                return true;
+            }
+            try {
+                searchNextBucket();
+            } catch (java.util.NoSuchElementException e){
+                return false;
+            }
+            return true;
+        }
     }
 }
