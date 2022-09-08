@@ -31,8 +31,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         ArrayMap<K, V>[] old = buckets;
         buckets = new ArrayMap[newSize];
         this.clear();
-        for (ArrayMap<K,V> map : old){
-            for (K key : map){
+        for (ArrayMap<K, V> map : old) {
+            for (K key : map) {
                 put(key, map.get(key));
             }
         }
@@ -81,7 +81,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         }
         map.put(key, value);
 
-        if (loadFactor() > MAX_LF){
+        if (loadFactor() > MAX_LF) {
             resize(2 * size);
         }
     }
