@@ -3,10 +3,10 @@ package lab9;
 import java.util.*;
 
 /**
- *  A hash table-backed Map implementation. Provides amortized constant time
- *  access to elements via get(), remove(), and put() in the best case.
+ * A hash table-backed Map implementation. Provides amortized constant time
+ * access to elements via get(), remove(), and put() in the best case.
  *
- *  @author Your name here
+ * @author Your name here
  */
 public class MyHashMap<K, V> implements Map61B<K, V> {
 
@@ -16,7 +16,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     private ArrayMap<K, V>[] buckets;
     private int size;
 
-    private int loadFactor() {
+    // TODO : ?maybe loadFctor shuld be double?
+    public int loadFactor() {
         return size / buckets.length;
     }
 
@@ -26,10 +27,15 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     }
 
     /*  resize the array of buckets anytime the load factor exceeds MAX_LF */
-    private void resize(int newSize){
-        // TODO
+    private void resize(int newSize) {
+        ArrayMap<K, V>[] old = buckets;
         buckets = new ArrayMap[newSize];
         this.clear();
+        for (ArrayMap<K,V> map : old){
+            for (K key : map){
+                put(key, map.get(key));
+            }
+        }
     }
 
     /* Removes all of the mappings from this map. */
@@ -41,9 +47,10 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         }
     }
 
-    /** Computes the hash function of the given key. Consists of
-     *  computing the hashcode, followed by modding by the number of buckets.
-     *  To handle negative numbers properly, uses floorMod instead of %.
+    /**
+     * Computes the hash function of the given key. Consists of
+     * computing the hashcode, followed by modding by the number of buckets.
+     * To handle negative numbers properly, uses floorMod instead of %.
      */
     private int hash(K key) {
         if (key == null) {
@@ -64,15 +71,19 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     }
 
     /* Associates the specified value with the specified key in this map.
-    * putting with existing key updates the value
-    */
+     * putting with existing key updates the value
+     */
     @Override
     public void put(K key, V value) {
         Map61B<K, V> map = buckets[hash(key)];
-        if (! map.containsKey(key)){
+        if (!map.containsKey(key)) {
             size += 1;
         }
         map.put(key, value);
+
+        if (loadFactor() > MAX_LF){
+            resize(2 * size);
+        }
     }
 
     /* Returns the number of key-value mappings in this map. */
@@ -87,7 +98,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     @Override
     public Set<K> keySet() {
         Set<K> set = new HashSet<K>();
-        for (K key : this){
+        for (K key : this) {
             set.add(key);
         }
         return set;
@@ -98,7 +109,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * UnsupportedOperationException. */
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        Map61B<K, V> map = buckets[hash(key)];
+        return map.remove(key);
     }
 
     /* Removes the entry for the specified key only if it is currently mapped to
@@ -106,7 +118,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * throw an UnsupportedOperationException.*/
     @Override
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException();
+        Map61B<K, V> map = buckets[hash(key)];
+        return map.remove(key, value);
     }
 
     @Override
@@ -119,21 +132,21 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         private int presentIndex;
         private List<K> cacheList;
 
-        public hashSetIterator(){
+        public hashSetIterator() {
             presentIndex = -1;
             cacheList = new LinkedList<>();
         }
 
         @Override
         public K next() {
-            Iterator<K> iterator= cacheList.iterator();
-            if (iterator.hasNext()){
+            Iterator<K> iterator = cacheList.iterator();
+            if (iterator.hasNext()) {
                 K rv = iterator.next();
-               cacheList.remove(rv);
+                cacheList.remove(rv);
                 return rv;
             }
             presentIndex = searchNextBucket();
-            for (K key : buckets[presentIndex]){ // copy
+            for (K key : buckets[presentIndex]) { // copy
                 cacheList.add(key);
             }
             return next();
@@ -154,12 +167,12 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
         @Override
         public boolean hasNext() {
-            if (cacheList.size() != 0){
+            if (cacheList.size() != 0) {
                 return true;
             }
             try {
                 searchNextBucket();
-            } catch (java.util.NoSuchElementException e){
+            } catch (java.util.NoSuchElementException e) {
                 return false;
             }
             return true;

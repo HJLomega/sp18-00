@@ -131,6 +131,7 @@ public class TestMyHashMap {
         MyHashMap<String, Integer> dictionary = new MyHashMap<>();
         for (int i = 0; i < 20; i++) {
             dictionary.put("hi" + i, 1);
+            System.out.println(dictionary.loadFactor());
         }
         for (String s : dictionary){
             System.out.println(s);
