@@ -90,7 +90,6 @@ public class Percolation {
             toBeFull = isOpen(row + 1, col);
             if (toBeFull) {
                 setFull(row + 1, col, row, col);
-                return;
             }
         } catch (IllegalArgumentException e) {
         }
@@ -98,7 +97,6 @@ public class Percolation {
             toBeFull = isOpen(row, col - 1);
             if (toBeFull) {
                 setFull(row, col - 1, row, col);
-                return;
             }
         } catch (IllegalArgumentException e) {
         }
@@ -106,7 +104,6 @@ public class Percolation {
             toBeFull = isOpen(row, col + 1);
             if (toBeFull) {
                 setFull(row, col + 1, row, col);
-                return;
             }
         } catch (IllegalArgumentException e) {
         }
