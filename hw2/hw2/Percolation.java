@@ -32,10 +32,10 @@ public class Percolation {
 
     private void checkRange(int row, int col) {
         if (row < 0 || row >= N) {
-            throw new java.lang.IllegalArgumentException("row out of range");
+            throw new java.lang.IndexOutOfBoundsException("row out of range");
         }
         if (col < 0 || col >= N) {
-            throw new java.lang.IllegalArgumentException("col out of range");
+            throw new java.lang.IndexOutOfBoundsException("col out of range");
         }
     }
 
@@ -52,7 +52,7 @@ public class Percolation {
 
     /* check whether a new opened site should be full, if so set that site full */
     private void newToBeFull(int row, int col) {
-        if (row == 0){
+        if (row == 0) {
             setFull(row, col, row - 1, col);
             return;
         }
@@ -63,7 +63,7 @@ public class Percolation {
                 setFull(row, col, row - 1, col);
                 return;
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IndexOutOfBoundsException e) {
         }
         try {
             toBeFull = isFull(row + 1, col);
@@ -71,7 +71,7 @@ public class Percolation {
                 setFull(row, col, row + 1, col);
                 return;
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IndexOutOfBoundsException e) {
         }
         try {
             toBeFull = isFull(row, col - 1);
@@ -79,7 +79,7 @@ public class Percolation {
                 setFull(row, col, row, col - 1);
                 return;
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IndexOutOfBoundsException e) {
         }
         try {
             toBeFull = isFull(row, col + 1);
@@ -87,7 +87,7 @@ public class Percolation {
                 setFull(row, col, row, col + 1);
                 return;
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IndexOutOfBoundsException e) {
         }
 
     }
@@ -100,28 +100,28 @@ public class Percolation {
             if (toBeFull) {
                 setFull(row - 1, col, row, col);
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IndexOutOfBoundsException e) {
         }
         try {
             toBeFull = isOpen(row + 1, col);
             if (toBeFull) {
                 setFull(row + 1, col, row, col);
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IndexOutOfBoundsException e) {
         }
         try {
             toBeFull = isOpen(row, col - 1);
             if (toBeFull) {
                 setFull(row, col - 1, row, col);
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IndexOutOfBoundsException e) {
         }
         try {
             toBeFull = isOpen(row, col + 1);
             if (toBeFull) {
                 setFull(row, col + 1, row, col);
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IndexOutOfBoundsException e) {
         }
     }
 
@@ -129,7 +129,7 @@ public class Percolation {
         check whether the site below  should be open
      */
     private void setFull(int row, int col, int sourceRow, int sourceCol) {
-        if (isFull(row, col)){
+        if (isFull(row, col)) {
             return;
         }
         grid[row][col] = 2;

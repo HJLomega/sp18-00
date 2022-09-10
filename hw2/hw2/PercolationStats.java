@@ -1,8 +1,7 @@
 package hw2;
 
-import java.lang.Math;
-
 import edu.princeton.cs.introcs.StdRandom;
+import org.junit.Test;
 
 public class PercolationStats {
     private double meanOfThresholds;
@@ -77,13 +76,4 @@ public class PercolationStats {
         return p.numberOfOpenSites() / ((double) N * N);
     }
 
-    public static void main(String[] args) {
-        PercolationFactory pf = new PercolationFactory();
-        PercolationStats ps = new PercolationStats(50, 100, pf);
-        System.out.println(ps.mean());
-        System.out.println(ps.stddev());
-        System.out.println(ps.confidenceLow());
-        System.out.println(ps.confidenceHigh());
-
-    }
 }
