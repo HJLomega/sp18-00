@@ -66,6 +66,14 @@ public class Percolation {
         } catch (IllegalArgumentException e) {
         }
         try {
+            toBeFull = isFull(row + 1, col);
+            if (toBeFull) {
+                setFull(row, col, row + 1, col);
+                return;
+            }
+        } catch (IllegalArgumentException e) {
+        }
+        try {
             toBeFull = isFull(row, col - 1);
             if (toBeFull) {
                 setFull(row, col, row, col - 1);
@@ -81,11 +89,19 @@ public class Percolation {
             }
         } catch (IllegalArgumentException e) {
         }
+
     }
 
     /* check whether a full site should FlowAround, if so set the corresponded site full */
     private void fullFlowAround(int row, int col) {
         boolean toBeFull;
+        try {
+            toBeFull = isOpen(row - 1, col);
+            if (toBeFull) {
+                setFull(row - 1, col, row, col);
+            }
+        } catch (IllegalArgumentException e) {
+        }
         try {
             toBeFull = isOpen(row + 1, col);
             if (toBeFull) {
