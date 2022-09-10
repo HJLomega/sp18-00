@@ -24,9 +24,13 @@ public class testPercolation {
         Percolation p3 =new Percolation(3);
         assertEquals(false, p3.percolates());
         p3.open(0,0);
+        assertEquals(false, p3.percolates());
         p3.open(1,0);
+        assertEquals(false, p3.percolates());
         p3.open(1,1);
+        assertEquals(false, p3.percolates());
         p3.open(2,1);
+        assertEquals(true, p3.percolates());
         p3.open(2,2);
         assertEquals(true, p3.percolates());
     }
