@@ -51,6 +51,11 @@ public class Percolation {
         if (!isOpen(row, col)) {
             grid[row][col] = true;
             nOfOpenSites += 1;
+            if (N == 1) {
+                uf.union(top, xy2Index(row, col));
+                uf.union(down, xy2Index(row, col));
+                return;
+            }
             if (row == 0) {
                 connectAround(row, col);
                 uf.union(top, xy2Index(row, col));
@@ -119,5 +124,9 @@ public class Percolation {
     // does the system percolate?
     public boolean percolates() {
         return uf.connected(top, down);
+    }
+
+    public static void main(String[] args) {
+
     }
 }
